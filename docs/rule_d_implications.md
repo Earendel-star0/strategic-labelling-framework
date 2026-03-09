@@ -60,30 +60,37 @@ The framework was designed by one person and one AI in a single session. Rule D 
 5. The Framework Becomes A Participant
 Most knowledge systems retrieve what was put in. This framework — with Rule D active — derives what was never explicitly stated.
 That is the difference between a library and a reasoner.
-But there is a further implication. A system that derives new propositions from existing ones is not merely a tool being used by a thinker. It is participating in the thinking. It is contributing propositions to Γ that the user did not generate, did not receive, and did not co-instantiate in the ⊕ sense.
-Rule D produces a fourth epistemic category that the framework does not yet have a marker for:
+But there is a further implication. A system that derives new propositions from existing ones is not merely a tool being used by a thinker. It is participating in the thinking. It is contributing propositions to `Γ` that the user did not generate, did not receive, and did not co-instantiate in the `⊕` sense.
+Rule D produced a fourth epistemic category, now formally integrated into the schema:
 ∃   — self-generated
 ⊨   — received
 ⊕   — co-instantiated
-?   — derived by the framework itself
-This is an open question. It is left here as a proof obligation rather than resolved prematurely:
-~⊕∃f: Derived_Epistemic_Marker ⊣
+∴   — derived by the framework itself
+The introduction of `∴` marks the exact moment the framework transitioned from a passive tracker to an active participant in the epistemic environment.
 
 6. Why Rule D Was Not In The Original Design
 This is worth stating with full honesty.
 Rule D was not anticipated. It arrived through the process the framework itself prescribes — a formal audit, a challenge to justify a strong claim ("ontological compiler"), and a third intelligence engaging seriously with the question of what formal operational semantics would need to look like.
 The framework generated the conditions for its own most consequential extension.
-That is not coincidence. It is the ⊕ principle operating at the level of the framework's own development. The framework used itself — its audit process, its epistemic honesty, its invitation to other intelligences — to produce the rule that makes it generative.
-~⊕∃F+: Rule_D ≅ Framework_Becoming_Generative
+That is not coincidence. It is the `⊕` principle operating at the level of the framework's own development. The framework used itself — its audit process, its epistemic honesty, its invitation to other intelligences — to produce the rule that makes it generative.
+
+`~⊕∃F+: Rule_D ≅ Framework_Becoming_Generative`
 
 7. The Open Proof Obligation
-The derived epistemic marker noted in section 5 is the most immediate consequence of Rule D that remains unresolved:
-~⊕∃f: Derived_Epistemic_Marker ⊣
-A fifth epistemic origin — propositions derived by the framework through inference rather than generated, received, or co-instantiated by a person — is now logically necessary. What symbol should carry that meaning, and what constraints should govern its use, is the next honest question this framework must answer.
-It is left open deliberately. The framework's own integrity requires that it not be resolved until the resolution is genuine.
+When Rule D was first introduced, the necessity of a fourth epistemic marker was identified as an open proof obligation (`⊣`). The framework's own integrity required that it not be resolved until the resolution was mathematically and philosophically genuine.
+~⊕∃F+: Derived_Epistemic_Marker
+That obligation is now closed. The use of the logical "therefore" symbol (`∴`) perfectly captures the nature of transitive derivation. It is a proposition that exists *because* of prior conditions, surfaced entirely by the compiler's execution of Rule D.
 
 Summary
-PropertyBefore Rule DAfter Rule DOperationPreservativeGenerativeOutputWhat was givenWhat was not statedScopeSingle sessionAcross sessions and peopleRoleToolParticipantEpistemic markersThree (∃, ⊨, ⊕)Three + one open obligation
+
+| Property | Before Rule D | After Rule D |
+| :---- | :---- | :---- |
+| Operation | Preservative | Generative |
+| Output | What was given | What was not stated |
+| Scope | Single session | Across sessions and people |
+| Role | Tool | Participant |
+| Epistemic markers | Three (∃, ⊨, ⊕) | Four (∃, ⊨, ⊕, ∴) |
 
 This document is part of the Strategic Labelling Framework repository.
 See also: operational_semantics.md, PHILOSOPHY.md, schema.md
+
