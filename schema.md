@@ -235,7 +235,7 @@ Note: `∃F+` must be matched before `∃F` to avoid partial matching.
 
 ## Versioning
 
-This schema reflects **Strategic Labelling Framework v2.2**.
+This schema reflects **Strategic Labelling Framework v2.4**.
 For a full history of changes, see `CHANGELOG.md`.
 
 ---
