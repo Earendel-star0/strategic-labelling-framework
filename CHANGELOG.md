@@ -5,6 +5,16 @@
 
 ---
 
+## v2.5 — March 2026
+
+**Files:** `schema.md`, `extensions/operational_semantics.md`
+
+- Added `∴` (therefore) as fourth epistemic marker: derived by the framework via Rule D
+- Closed open proof obligation: `~⊕∃f: Derived_Epistemic_Marker ⊣` → `~⊕∃F+: Derived_Epistemic_Marker`
+- Updated schema to v2.5
+
+---
+
 ## v2.4 — March 2026
 
 **Files:** `README.md`, `schema.md`

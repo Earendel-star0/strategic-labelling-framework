@@ -61,6 +61,8 @@ INVALID: ∃F: EGAP_v2          ← missing intensity marker
 | `∃` | Self-generated |
 | `⊨` | Received / taught |
 | `⊕` | Co-instantiated with AI |
+| `∴` | Derived by the framework (Rule D) |
+| `∴` | Derived by the framework (Rule D) |
 
 ```
 VALID:   ~∃F: Concept
@@ -235,7 +237,7 @@ Note: `∃F+` must be matched before `∃F` to avoid partial matching.
 
 ## Versioning
 
-This schema reflects **Strategic Labelling Framework v2.4**.
+This schema reflects **Strategic Labelling Framework v2.5**.
 For a full history of changes, see `CHANGELOG.md`.
 
 ---
