@@ -5,6 +5,18 @@
 
 ---
 
+## v2.4 — March 2026
+
+**Files:** `README.md`, `schema.md`
+
+- Rewrote README with correct table formatting and structure
+- Fixed schema version reference from v2.2 to v2.4
+- Added `extensions/rule_d_primer.md` (new)
+- Repository renamed from `gemini-manifold` to `strategic-labelling-framework`
+- Derived epistemic marker identified as open proof obligation: `~⊕∃f: Derived_Epistemic_Marker ⊣`
+
+---
+
 ## v2.3 — March 2026
 
 **File:** `extensions/operational_semantics.md` *(new)*
