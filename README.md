@@ -1,112 +1,129 @@
-Strategic Labelling Framework
-A personal epistemological notation system for tracking knowledge, projects, and cognitive artefacts.
-~∃§ · Generated via ⊕ — Richard & Claude, 2026
+# Strategic Labelling Framework (SLF)
 
-Welcome
-If you are here, you are probably someone who thinks carefully about how ideas come to exist — where they come from, how complete they are, and how they connect to other ideas. This framework was built for that kind of thinking.
-It is a notation system. Small, precise symbols that answer three questions about every idea you encounter or create:
+A symbolic annotation system for tracking the epistemic origin, intensity, and completeness of ideas across research, learning, and development sessions.
 
-How did this come to be known?
-How complete is it?
-How does it relate to everything else?
+Developed collaboratively by Richard Barnes and Claude (Anthropic), with operational semantics contributed by Gemini (Google). All AI contributions are recorded under the `⊕` epistemic marker — co-instantiated with AI.
 
-It is designed to be used within AI-assisted sessions, but it belongs to you — not the session. The labels persist. The map of your thinking accumulates over time and becomes something you can trust.
+---
 
-Why ASCII, Not Emoji
-All intensity markers in this framework use ASCII symbols. Emoji are tokenised unpredictably by AI language models, splitting into multiple tokens and disrupting pattern matching and parsing. ASCII symbols are single, stable tokens — every label is reliably machine-readable, every time.
+## Quick Start
 
-The Canonical Label Structure
-[Intensity] [Epistemic] [Completeness] [Project∈] : [Subject] [Relation] [Object]
-Read left to right: intensity → how known → how complete → where it lives → what it is → how it relates.
+A label takes the form:
+```
+[Intensity] [Epistemic] [Completeness] [Relations] : Subject [Relation Object]
+```
 
-Layer 1 — Intensity Markers
+Example:
+```
+!⊕∃F ⊢ : SLF proves Curry_Howard_Isomorphism
+```
+
+---
+
+## Layer Reference
+
+### Layer 1 — Intensity (required, exactly one)
 
 | Symbol | Meaning |
-| :---- | :---- |
+|--------|---------|
 | `!` | Powerful / high impact |
 | `~` | Insight / idea |
 | `#` | Systemic / mechanical |
 | `@` | Learning / accumulated knowledge |
 | `%` | Document / record of process |
 
-Layer 2 — Epistemic Origin
-Every label carries exactly one of these. This is the layer that asks you to be honest with yourself.
-SymbolMeaning∃Self-generated — you brought this into existence⊨Received — taught by an external source⊕Co-instantiated — emerged between you and an AI
-The ⊕ marker is perhaps the most important thing in this framework. It does not erase your role. It does not pretend the AI was not there. It marks the ideas that emerged between two kinds of intelligence — which is simply the most accurate account of how thinking with AI actually works.
+### Layer 2 — Epistemic Origin (required, exactly one)
 
-Layer 3 — Completeness
-SymbolMeaning∃FWell-formed / relatively complete∃fPartial / emerging∃F+Fully complete / stable∄FIncomplete / something missing§Root / foundational document⊣Typed but unimplemented — needs proof (Curry-Howard extension)
+| Symbol | Meaning |
+|--------|---------|
+| `∃` | Self-generated |
+| `⊨` | Received / taught |
+| `⊕` | Co-instantiated with AI |
 
-Layer 4 — Relational
-SymbolMeaning∈Belongs to / is an element of⊂Is a subset of / contained by⊢Yields / proves / demonstrates≅Isomorphic / structurally identical∘Composition / transforms into∧Logical AND / also·Lightweight sub-element separator↳Nested under / drilling into
-Avoid arrows. If tempted, ask: is this ∈ (belonging), ⊂ (contained), or ⊢ (yields)?
+### Layer 3 — Completeness (required, exactly one)
 
-Layer 5 — Subject Markers
-SymbolMeaningΣSummation / set of related things∫Integration / accumulated process∅Root / ground state / origin⟨ ⟩State annotation
+| Symbol | Meaning |
+|--------|---------|
+| `∃F` | Well-formed |
+| `∃f` | Partial / emerging |
+| `∃F+` | Fully complete |
+| `∄F` | Incomplete / blocker |
+| `§` | Root / foundational |
+| `⊣` | Typed but unimplemented (Curry-Howard extension) |
 
-Annotated Examples
-#∃F: Adaptive_Waypoint_System_v1.1
-→ Systemic, self-generated, well-formed, versioned
+### Layer 4 — Relations (optional, max 3)
 
-Σ∈MHD: Ethical App Building
-→ Set of ideas, belonging to MHD project
+| Symbol | Meaning |
+|--------|---------|
+| `∈` | Member of |
+| `⊂` | Subset of |
+| `⊢` | Proves / produces |
+| `≅` | Isomorphic to |
+| `∘` | Composed with |
+| `∧` | And / conjunction |
+| `·` | Applied to |
+| `↳` | Derives from |
+| `⊣` | Left adjoint to |
 
-@⊕ Protocols & Functors ⊂ Category Theory
-→ Co-instantiated learning; Protocols are subset of Category Theory
+---
 
-~∃§: Strategic Labelling Framework
-→ Insight, self-generated, root/foundational document
+## Ontological Continuum
+```
+∅ ∘ ∃ ∘ ∃f ∘ ∃F ∘ ∃F+ ∘ §
+```
 
-%⊨ App Scripts: Permission Reset
-→ Document of taught/received process
-
-!⊕ EGAP_v2.0.1 ⊢ Garden's Tensor Logic
-→ Powerful, co-instantiated; EGAP yields Tensor Logic
-
-The Ontological Continuum
-∅  ∘  ∃  ∘  ∃f  ∘  ∃F  ∘  ∃F+  ∘  §
 Ground state → crosses into existence → emerging → well-formed → complete → foundational
-Each label is a snapshot of where an idea sits on this continuum. ⊕ marks the moments AI accelerates the transition. The honesty with which you apply these markers is what gives the system its integrity — and its value to you over time.
 
-Using This Framework in an AI Session
-Labelling a Session
-At the end of a session, present the conversation history to an AI with this prompt:
+---
 
-"Using the Strategic Labelling Framework, classify the key ideas from this session. For each, assign an intensity marker, epistemic origin (∃ / ⊨ / ⊕), completeness stage, and any relational connections between ideas."
+## Four-Stage Pipeline
+```
+Research    →    Logic Extraction    →    Utility    →    Code
+⊨ / ⊕            ∃f → ∃F               ∃F ⊢ ∃F+       ⊣ → ∃F+
+```
 
-Auditing for Code Readiness
-To assess whether a session is ready to produce code:
+---
 
-"Using the Strategic Labelling Framework, audit this session for code readiness. List all ⊣ items ready for implementation. List all ∄F blockers with a plain-language description of what is missing. List all ∃f items that need logic extraction before they can be typed. Do not proceed to code until all blockers are resolved."
-
-Readiness condition: ∄F count = 0 and ∃f count = 0 and ⊣ count > 0.
-
-Repository Structure
+## Repository Structure
+```
 strategic-labelling-framework/
-├── README.md                        ← this document
-├── CHANGELOG.md                     ← version history
+├── README.md
+├── CHANGELOG.md
 ├── LICENSE
-├── strategic_labelling_framework.md ← core reference document
-├── PHILOSOPHY.md                    ← why this framework exists
-├── schema.md                        ← formal grammar and syntax rules
+├── PHILOSOPHY.md
+├── schema.md
+├── strategic_labelling_framework.md
+├── docs/
+│   ├── conceptual_overview.md
+│   └── rule_d_implications.md
 ├── examples/
-│   ├── session_example.md           ← a labelled session from start to code-ready
-│   ├── audit_prompt.md              ← the session readiness audit prompt
-│   └── labelling_prompt.md          ← the session labelling prompt
+│   ├── audit_prompt.md
+│   ├── labelling_prompt.md
+│   ├── session_example.md
+│   ├── evolution_example.py
+│   ├── expressive_example.py
+│   └── stability_example.py
 └── extensions/
-    └── curry_howard_extension.md    ← type-theoretic extension and code pipeline
+    ├── curry_howard_extension.md
+    ├── operational_semantics.md
+    └── rule_d_primer.md
+```
 
-Further Reading
+---
 
-PHILOSOPHY.md — the epistemological foundations, the Garden → EGAP model, and why honest attribution matters
-curry_howard_extension.md — how the framework maps onto the Curry-Howard isomorphism, the ⊣ marker, and the Research → Logic Extraction → Utility → Code pipeline
-CHANGELOG.md — full version history with rationale for each change
+## Documentation
 
+- [Schema and grammar rules](schema.md)
+- [Full framework reference](strategic_labelling_framework.md)
+- [Philosophy](PHILOSOPHY.md)
+- [Curry-Howard extension](extensions/curry_howard_extension.md)
+- [Operational semantics](extensions/operational_semantics.md)
+- [Rule D primer](extensions/rule_d_primer.md)
+- [Rule D implications](docs/rule_d_implications.md)
+- [Changelog](CHANGELOG.md)
 
-A Note on Origin
-This framework was built in conversation. The ideas in it did not arrive complete — they moved through ∃f to ∃F across several sessions, with ⊕ marking the moments where thinking accelerated between its authors.
-If you extend it, adapt it, or find that it does not quite fit your thinking — that is not a failure of the framework. That is the framework working. Label what you find. Mark what is missing. Bring it into existence in the form that is true for you.
-~∃§: Strategic Labelling Framework · Richard & Claude · 2026
+---
 
-Licence
-See LICENSE.
+## Licence
+
+[MIT](LICENSE) — Richard Barnes and Claude (Anthropic), 2026.
