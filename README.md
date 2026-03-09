@@ -20,7 +20,14 @@ The Canonical Label Structure
 Read left to right: intensity → how known → how complete → where it lives → what it is → how it relates.
 
 Layer 1 — Intensity Markers
-SymbolMeaning!Powerful / high impact~Insight / idea#Systemic / mechanical@Learning / accumulated knowledge%Document / record of process
+
+| Symbol | Meaning |
+| :---- | :---- |
+| `!` | Powerful / high impact |
+| `~` | Insight / idea |
+| `#` | Systemic / mechanical |
+| `@` | Learning / accumulated knowledge |
+| `%` | Document / record of process |
 
 Layer 2 — Epistemic Origin
 Every label carries exactly one of these. This is the layer that asks you to be honest with yourself.
