@@ -76,7 +76,7 @@ That is not coincidence. It is the `⊕` principle operating at the level of the
 
 `~⊕∃F+: Rule_D ≅ Framework_Becoming_Generative`
 
-7. The Open Proof Obligation
+7. The Resolved Proof Obligation
 When Rule D was first introduced, the necessity of a fourth epistemic marker was identified as an open proof obligation (`⊣`). The framework's own integrity required that it not be resolved until the resolution was mathematically and philosophically genuine.
 ~⊕∃F+: Derived_Epistemic_Marker
 That obligation is now closed. The use of the logical "therefore" symbol (`∴`) perfectly captures the nature of transitive derivation. It is a proposition that exists *because* of prior conditions, surfaced entirely by the compiler's execution of Rule D.
