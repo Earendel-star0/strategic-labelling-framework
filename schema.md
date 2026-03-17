@@ -194,18 +194,20 @@ A soft warning in an audit context signals a potential `∄F` — something that
 For those building parsers or AI prompts around this schema:
 
 ```
-label         ::= intensity epistemic completeness [project] ":" SPACE subject [relations]
+label         ::= intensity epistemic completeness [project] [uncertainty] ":" SPACE subject [relations]
 intensity     ::= "!" | "~" | "#" | "@" | "%"
 epistemic     ::= "∃" | "⊨" | "⊕" | "∴"
 completeness  ::= "∃F+" | "∃F" | "∃f" | "∄F" | "§" | "⊣"
 project       ::= "∈" name
+uncertainty   ::= "[" float "]" | "?"
 subject       ::= name
 relations     ::= SPACE relation [SPACE relation [SPACE relation]]
 relation      ::= relop [SPACE object]
 relop         ::= "∈" | "⊂" | "⊢" | "≅" | "∘" | "∧" | "·" | "↳" | "⊣"
 object        ::= name
-name          ::= word ("_" word)* | word ("-" word)*
+name          ::= word ("_" word)* | word ("-" word)* | word ("." word)*
 word          ::= [A-Za-z0-9]+
+float         ::= "0." [0-9]+ | "1.0"
 SPACE         ::= " "
 ```
 

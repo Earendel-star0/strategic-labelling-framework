@@ -1,6 +1,12 @@
-# ∃§: Strategic Labelling Framework
+# ∃§: Strategic Labelling Framework v2.7
 
-*A personal epistemological notation system for tracking knowledge, projects, and cognitive artefacts*
+*A generative ontological notation system for tracking knowledge, projects, and cognitive artefacts*
+
+## The Canonical Structure
+
+**[Intensity] [Epistemic] [Completeness] [Project∈] [Uncertainty] : [Subject] [Relation] [Object]**
+
+*Read left to right: intensity → how known → how complete → domain → confidence → what it is → how it relates*
 
 ## Layer 1 — Intensity Markers
 
@@ -66,11 +72,16 @@
 
 *Captures the gap between having a type signature (proposition) and a program body (proof).*
 
-## Canonical Label Structure
+## Layer 7 — Uncertainty: Heuristic Weight
+| Symbol | Meaning | Usage |
+| :---- | :---- | :---- |
+| **[n]** | Confidence score (0.0 – 1.0) | *~⊕∃f[0.8]: Emergent_Pattern* |
+| **?** | Heuristic / speculative | *~∃f?: Speculative_Morphism* |
 
-**[Intensity] [Epistemic] [Completeness] [Project∈] : [Subject] [Relation] [Object]**
+## Annotated Examples v2.7
+**!⊕∴∃F+: Category_Theory ⊢ Intersubjective_Communication** Powerful impact, co-instantiated, derived via Rule D, stable proposition.
 
-*Read left to right: intensity → how known → how complete → where it lives → what it is → how it relates*
+**~⊕∃f[0.7]: Neural_Manifold ≅ Geometric_Invariant** Insight, co-instantiated, partial idea with 70% confidence score, isomorphic relation.
 
 ## Annotated Examples
 

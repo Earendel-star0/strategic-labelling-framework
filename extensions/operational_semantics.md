@@ -86,6 +86,26 @@ A ⊢ B ∈ Γ     B ⊢ C ∈ Γ
 
 ---
 
+### Rule E — The Isomorphic Resolution Rule (Equivalence)
+
+Derives morphisms across structurally identical propositions.
+
+```
+A ≅ B ∈ Γ     B ⊢ C ∈ Γ
+──────────────────────────────────────────────────
+Γ → Γ ∪ {A ∴ C}
+```
+
+### Rule F — The Conflict Detection Rule (Dissonance)
+
+Halts compilation if contradictory propositions are derived.
+
+```
+A ⊢ B ∈ Γ     A ⊢ ¬B ∈ Γ
+──────────────────────────────────────────────────
+Γ → Halt(Epistemic_Dissonance)
+```
+
 ## 3. Termination: The Code-Readiness Condition
 
 A traditional compiler halts when it produces an executable binary or throws a fatal error. The Ontological Compiler halts when it reaches a state of **Absolute Code-Readiness**.

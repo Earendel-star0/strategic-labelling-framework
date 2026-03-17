@@ -1,8 +1,17 @@
 # CHANGELOG.md
 ## Strategic Labelling Framework — Version History
 
-*Authorship: Richard & Claude*
+*Authorship: Richard & Claude & Gemini*
 
+## v2.7 — March 2026 (Ontological Compiler Specification)
+
+**Files:** `schema.md`, `strategic_labelling_framework.md`, `extensions/operational_semantics.md`, `docs/toolchain_specification.md`
+
+- **Layer 7 — Uncertainty**: Formally introduced heuristic weight markers—confidence scores `[n]` and speculative markers `?`—into the canonical label structure and BNF grammar.
+- **Enhanced Naming Convention**: Broadened the `name` rule in `schema.md` to support dot notation (e.g., `v2.0.1`), enabling machine-readable version components.
+- **Rule E — Isomorphic Resolution**: Added operational logic to derive morphisms across structurally identical propositions within the Epistemic Environment (`Γ`).
+- **Rule F — Conflict Detection**: Implemented safety logic to halt compilation upon identifying contradictory derived propositions (Epistemic Dissonance).
+- **Toolchain Specification**: Authored new foundational document defining requirements for the SLF Linker, Cognitive Linter, Visualizer, and NLLE Automation.
 ---
 
 ## v2.5 — March 2026
