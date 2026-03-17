@@ -62,17 +62,15 @@ INVALID: ∃F: EGAP_v2          ← missing intensity marker
 | `⊨` | Received / taught |
 | `⊕` | Co-instantiated with AI |
 | `∴` | Derived by the framework (Rule D) |
+| `∴` | Derived by the framework (Rule D) |
 
 ```
 VALID:   ~∃F: Concept
 VALID:   ~⊨F: Concept
 VALID:   ~⊕F: Concept
-VALID:   ~∴F: Concept
 INVALID: ~∃⊕F: Concept       ← two epistemic markers
 INVALID: ~F: Concept          ← missing epistemic marker
 ```
-
-**Note on `∴`:** The derived marker appears automatically when Rule D (Structural Composition) infers a transitive relation in the session graph. Users do not typically create `∴` labels manually — they are produced by framework inference. See `operational_semantics.md` for details.
 
 ---
 
@@ -116,16 +114,13 @@ VALID:   #∃F: Ethical_App_Building       ← project membership omitted
 
 **Required.**
 
-The name of the idea, artefact, or concept being labelled. Multi-word names use underscore convention; versioning and domain qualifiers use hyphen.
+The name of the idea, artefact, or concept being labelled. Multi-word names use underscore convention.
 
 ```
 VALID:   ~∃F: Strategic_Labelling_Framework
-VALID:   ~∃F: EGAP-v2.0.1
-VALID:   ~∃F: Category-Theory
+VALID:   ~∃F: Concept
 INVALID: ~∃F: Strategic Labelling Framework   ← spaces in subject name
 ```
-
-**Naming philosophy:** Subject names are identifiers. They appear in session logs and in relational links across sessions. Underscores join words into a single identifier (`Strategic_Labelling_Framework`). Hyphens separate version numbers or domain qualifiers from the core name (`EGAP-v2.0.1`, `Permission-Reset-Script`). This convention keeps identifiers machine-readable and human-parseable across the framework's lifetime.
 
 ---
 
@@ -162,7 +157,7 @@ INVALID: !⊕∃F: EGAP ⊢ A ∧ B ∘ C ⊂ D    ← four relations, exceeds m
 
 **Optional but recommended.**
 
-The thing the Subject relates to. Follows the same naming convention as Subject — underscore for multi-word names, hyphen for versioning.
+The thing the Subject relates to. Follows the same naming convention as Subject — underscore for multi-word names.
 
 When a relation is present but no object is given, the label is **valid but flagged** with a soft warning:
 
@@ -196,7 +191,7 @@ For those building parsers or AI prompts around this schema:
 ```
 label         ::= intensity epistemic completeness [project] ":" SPACE subject [relations]
 intensity     ::= "!" | "~" | "#" | "@" | "%"
-epistemic     ::= "∃" | "⊨" | "⊕" | "∴"
+epistemic     ::= "∃" | "⊨" | "⊕"
 completeness  ::= "∃F+" | "∃F" | "∃f" | "∄F" | "§" | "⊣"
 project       ::= "∈" name
 subject       ::= name
@@ -204,16 +199,10 @@ relations     ::= SPACE relation [SPACE relation [SPACE relation]]
 relation      ::= relop [SPACE object]
 relop         ::= "∈" | "⊂" | "⊢" | "≅" | "∘" | "∧" | "·" | "↳" | "⊣"
 object        ::= name
-name          ::= word ("_" word)* | word ("-" word)*
+name          ::= word ("_" word)*
 word          ::= [A-Za-z0-9]+
 SPACE         ::= " "
 ```
-
-**Key changes from previous grammar:**
-- `name` now permits underscore (for multi-word identifiers) and hyphen (for versioning/qualification)
-- `word` remains alphanumeric — special characters are not permitted within words themselves, only as separators between words
-- `∴` (derived marker) added to epistemic options — typically produced by Rule D inference, not user-created
-- This broadened grammar now matches actual practice in all documented examples
 
 Note: `∃F+` must be matched before `∃F` to avoid partial matching.
 
@@ -223,13 +212,12 @@ Note: `∃F+` must be matched before `∃F` to avoid partial matching.
 
 ```
 ~∃§: Strategic_Labelling_Framework
-!⊕∃F: EGAP-v2.0.1 ⊢ Garden's_Tensor_Logic
-#∃F: Adaptive_Waypoint_System-v1.1
+!⊕∃F: EGAP_v2.0.1 ⊢ Garden's_Tensor_Logic
+#∃F: Adaptive_Waypoint_System_v1.1
 @⊕∃f: Category_Theory ⊂ Protocols
 %⊨∃F: App_Scripts · Permission_Reset
 ~∃F: Σ(Protocol_Design, Med_Viz) ⊢ Epistemic_Node ∧ Structural_Integrity
 ~⊕∃f: Curry_Howard ⊣
-~∴∃F: Category_Theory ⊢ Intersubjective_Communication
 ```
 
 ---
@@ -241,7 +229,7 @@ Note: `∃F+` must be matched before `∃F` to avoid partial matching.
 ∃F: Concept                   ← missing intensity marker
 ~F: Concept                   ← missing epistemic marker
 ~∃F:Concept                   ← missing space after colon
-~∃F: My Concept               ← spaces in subject name (use underscore)
+~∃F: My Concept               ← spaces in subject name
 ~∃F: A ⊢ B ∧ C ∘ D ⊂ E       ← five relations, exceeds maximum of three
 ```
 

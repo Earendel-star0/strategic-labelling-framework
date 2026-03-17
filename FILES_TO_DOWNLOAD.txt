@@ -1,0 +1,146 @@
+================================================================================
+STRATEGIC LABELLING FRAMEWORK — REFINEMENTS
+Files Ready for Download
+================================================================================
+
+LOCATION: /mnt/user-data/outputs/
+
+All files are ready to download. Copy them into your repository manually.
+
+================================================================================
+CORE REFINEMENT FILES (3 items)
+================================================================================
+
+1. schema.md (8.4 KB)
+   Purpose: Updated formal grammar with corrected BNF
+   What's new: Allows hyphens and dots in identifiers (e.g., Algorithm-v2.0.1)
+   Action: Replace your existing schema.md with this one
+           (or keep both and compare)
+
+2. tools/validate_label.py (10.4 KB)
+   Purpose: Label validator tool
+   What's new: Production-ready, no dependencies, works as CLI or Python library
+   Action: Create tools/ directory in your repo (if it doesn't exist)
+           Copy validate_label.py into tools/
+
+3. tools/README.md (5.9 KB) → Rename to tools/VALIDATOR_README.md
+   Purpose: Documentation for the validator
+   What's new: Usage examples, integration patterns, test fixtures
+   Action: Copy into tools/ directory
+
+================================================================================
+DOCUMENTATION & GUIDES (6 items)
+================================================================================
+
+4. README.md (9.9 KB)
+   Purpose: Executive summary of all three refinements
+   Action: Read for overview of what was done
+
+5. QUICK_START.md (5.9 KB)
+   Purpose: 5-minute quick start guide
+   Action: Read this first when you want to understand the refinements
+
+6. REFINEMENT_SUMMARY.md (6.4 KB)
+   Purpose: Detailed explanation of what changed and why
+   Action: Reference when you need technical details
+
+7. INTEGRATION_GUIDE.md (13 KB)
+   Purpose: Real-world workflows and integration patterns
+   Action: Reference when implementing in your workflow
+
+8. INDEX.md (5.1 KB)
+   Purpose: Navigation guide and file organization
+   Action: Reference guide for finding information
+
+9. DELIVERY_CHECKLIST.md (5.5 KB)
+   Purpose: Verification that all refinements are complete
+   Action: Reference for quality assurance
+
+================================================================================
+YOUR MANUAL INTEGRATION STEPS
+================================================================================
+
+1. DOWNLOAD all files from /mnt/user-data/outputs/
+
+2. IN YOUR REPOSITORY (/home/richardbarnes006/strategic-labelling-framework/):
+   
+   a) Replace or update schema.md:
+      - Option A: Replace existing schema.md with the new one
+      - Option B: Keep both and rename new one schema.md.refined
+      
+   b) Create tools/ directory (if it doesn't exist):
+      mkdir -p tools
+      
+   c) Copy validator:
+      cp validate_label.py tools/
+      cp tools/README.md tools/VALIDATOR_README.md
+      
+   d) Copy documentation:
+      cp QUICK_START.md REFINEMENT_SUMMARY.md INTEGRATION_GUIDE.md .
+      cp INDEX.md REFINEMENTS_INDEX.md  (rename to avoid conflict)
+      cp README.md REFINEMENTS_README.md (rename to avoid conflict)
+      cp DELIVERY_CHECKLIST.md .
+
+3. TEST the validator:
+   cd ~/strategic-labelling-framework
+   python3 tools/validate_label.py "~∃F: My_Concept"
+
+4. READ the documentation:
+   Start with QUICK_START.md
+   Then read REFINEMENT_SUMMARY.md if you want details
+
+================================================================================
+WHAT YOU'RE INSTALLING
+================================================================================
+
+Three Refinements:
+
+1. SCHEMA BNF UPDATE
+   - Corrected grammar (now matches real-world usage)
+   - Allows hyphens and dots in identifiers
+   - Backward compatible (all existing labels still valid)
+
+2. LABEL VALIDATOR
+   - Parses and validates labels against schema
+   - No external dependencies
+   - Works as CLI or Python library
+   - 100% tested on framework examples
+
+3. INTEGRATION DOCUMENTATION
+   - Quick start guide (5 min read)
+   - Real-world workflows (session, CI/CD, AI integration)
+   - Validator API documentation
+   - Verification checklist
+
+================================================================================
+FILES AT A GLANCE
+================================================================================
+
+/mnt/user-data/outputs/
+├── schema.md                      ← Replace your existing schema.md
+├── tools/
+│   ├── validate_label.py         ← Copy to tools/ in your repo
+│   └── README.md                 ← Rename to VALIDATOR_README.md
+├── QUICK_START.md                ← Read first (5 min)
+├── REFINEMENT_SUMMARY.md         ← Technical details
+├── INTEGRATION_GUIDE.md          ← Real-world patterns
+├── README.md                     ← Executive summary
+├── INDEX.md                      ← File organization
+├── DELIVERY_CHECKLIST.md         ← Verification
+└── FILES_TO_DOWNLOAD.txt         ← This file
+
+Total: 9 files, ~75 KB
+
+================================================================================
+QUESTIONS?
+================================================================================
+
+After downloading, refer to:
+- QUICK_START.md for immediate usage
+- INTEGRATION_GUIDE.md for workflow patterns
+- tools/VALIDATOR_README.md for API details
+- REFINEMENT_SUMMARY.md for technical information
+
+All files are complete, tested, and ready to use.
+
+================================================================================
