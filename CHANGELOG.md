@@ -1,8 +1,32 @@
-# CHANGELOG.md
-## Strategic Labelling Framework — Version History
+CHANGELOG.md
 
-*Authorship: Richard & Claude & Gemini*
+Strategic Labelling Framework — Version History
 
+Authorship: Richard & Claude & Gemini
+
+## v2.8 — March 2026 (Toolchain Implementation)
+
+**Files:** `tools/linker.py`, `tools/visualizer.py`, `tools/nlle_suggestor.py`, `tools/cognitive_linter.py`, `tools/journal_manager.py`, `schema.md`, `README.md`, `QUICK_START.md`, `tools/README.md`, `docs/toolchain_specification.md`
+
+### Toolchain — all four v2.7 proof obligations closed
+
+- **`tools/linker.py`** — Cross-file referential integrity checker
+- **`tools/visualizer.py`** — Graphviz DOT graph generator; derived edges (`∴`) rendered as dashed blue
+- **`tools/nlle_suggestor.py`** — Natural language logic extraction, automating Rule A
+- **`tools/cognitive_linter.py`** — Epistemic velocity monitor; reads `journal.log`, applies staleness thresholds, performs temporal Rule F conflict detection
+- **`tools/journal_manager.py`** — Session log writer; appends validated label sets to `journal.log` in YAML format
+- **`requirements.txt`** — Added `pyyaml==6.0.1`
+
+### Documentation corrections
+
+- **`schema.md`** — Version footer corrected to v2.7; Uncertainty field documented; BNF `name` rule unified to handle mixed separators
+- **`README.md`** — Example label corrected; `∴` added to epistemic table; `tools/` directory added to structure; Toolchain section added
+- **`QUICK_START.md`** — Import paths corrected; session workflow added; full file list updated
+- **`tools/README.md`** — Rewritten to cover all six tools including Cognitive Linter and Journal Manager
+- **`docs/toolchain_specification.md`** — Rewritten as full architectural document
+
+### Label transition
+`~⊕∃f: Toolchain ⊣` → `~⊕∃F+: Toolchain`
 ## v2.7 — March 2026 (Ontological Compiler Specification)
 
 **Files:** `schema.md`, `strategic_labelling_framework.md`, `extensions/operational_semantics.md`, `docs/toolchain_specification.md`

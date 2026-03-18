@@ -1,141 +1,121 @@
-# Quick Start — Using the Refinements
+# Quick Start — Strategic Labelling Framework v2.7
 
-Get started with the refined Strategic Labelling Framework in 5 minutes.
-
----
-
-## What Changed?
-
-Three things make the framework easier to use and maintain:
-
-1. **Schema is now honest** — the BNF grammar now matches what the framework actually allows (hyphens, dots in names)
-2. **Validator exists** — a tool that checks labels conform to the schema
-3. **Integration patterns documented** — clear instructions for using the validator in sessions and CI/CD
-
-**You don't need to change anything you're already doing.** All existing labels remain valid. The refinements just make the framework stricter and more toolable.
+Get up and running in 5 minutes.
 
 ---
 
-## Quick Start: Validating a Label
+## What the Framework Does
 
-### Option 1: Command line (fastest)
+The SLF gives every idea a label that records three things: how confident you are in it, where it came from, and how complete it is. Over time, the label graph becomes a map of how your thinking has moved — one that persists across sessions and can be reasoned over by the toolchain.
+
+---
+
+## The Label Structure
+
+```
+[Intensity] [Epistemic] [Completeness] [Project∈] [Uncertainty] : [Subject] [Relation] [Object]
+```
+
+A minimal valid label:
+
+```
+~∃F: My_Concept
+```
+
+A full label:
+
+```
+!⊕∃F∈SLF[0.9]: Cognitive_Linter ⊢ Epistemic_Velocity
+```
+
+Read left to right: powerful insight, co-instantiated with AI, well-formed, belongs to SLF project, 90% confidence — Cognitive_Linter yields Epistemic_Velocity.
+
+---
+
+## Markers at a Glance
+
+```
+Intensity:    !  ~  #  @  %
+Epistemic:    ∃  ⊨  ⊕  ∴
+Completeness: ∃F+  ∃F  ∃f  ∄F  §  ⊣
+Uncertainty:  [0.0–1.0]  ?
+Relations:    ∈  ⊂  ⊢  ≅  ∘  ∧  ·  ↳  ⊣   (max 3)
+```
+
+---
+
+## Validating a Label
+
+### Command line
 
 ```bash
+cd ~/strategic-labelling-framework
 python3 tools/validate_label.py "~∃F: My_Concept"
 ```
 
-**Output:**
+Output:
 ```
 Label: ~∃F: My_Concept
 Status: VALID
 Parsed: [~] [∃] [∃F] : My_Concept
 ```
 
-### Option 2: In Python (for AI systems or automation)
+### In Python
 
 ```python
-from tools.validate_label import validate_label
+import sys
+sys.path.insert(0, 'tools')
+from validate_label import validate_label
 
-result = validate_label("~∃F: My_Concept ⊢ Related_Concept")
+result = validate_label("~⊕∃F: My_Concept ⊢ Related_Concept")
 
 if result.valid:
-    print("✓ Label is valid")
-    print(f"  Subject: {result.parsed['subject']}")
-    print(f"  Relations: {result.parsed['relations']}")
+    print(f"Subject:    {result.parsed['subject']}")
+    print(f"Epistemic:  {result.parsed['epistemic']}")
+    print(f"Relations:  {result.parsed['relations']}")
 else:
-    print("✗ Label is invalid")
     for error in result.errors:
-        print(f"  {error}")
-```
-
----
-
-## Examples: Old vs New
-
-### Hyphens in names (now supported)
-
-```
-EGAP-v2.0.1 ⊢ Tensor_Logic
-```
-
-Before: ✗ Would fail ("invalid subject name")
-After: ✓ Valid (hyphens allowed for versioning)
-
-### Dots in version numbers (now supported)
-
-```
-System-v1.2.3
-```
-
-Before: ✗ Would fail
-After: ✓ Valid
-
-### All existing labels still work
-
-```
-~∃F: Strategic_Labelling_Framework          ✓ (unchanged)
-~⊕∃F: Type_Signature_Generation ⊣           ✓ (unchanged)
-#⊕∃F: borrowBook ⊢ Loan ∨ Error             ✓ (unchanged)
-```
-
----
-
-## Using in Your Session
-
-When you label ideas in a session, optionally validate them:
-
-```python
-# Your idea
-my_label = "~⊕∃F: New_Insight ⊢ Existing_Framework"
-
-# Quick validation
-from tools.validate_label import validate_label
-result = validate_label(my_label)
-
-if result.valid:
-    print(f"✓ Ready to file: {my_label}")
-else:
-    print(f"⚠ Fix this: {result.errors}")
+        print(f"✗ {error}")
 ```
 
 ---
 
 ## Common Patterns
 
-### Versioned ideas
+### A well-formed idea
 
 ```
-~⊕∃F: Algorithm-v1.0 ⊢ Improvement-v1.1
+~∃F: Strategic_Labelling_Framework
 ```
 
-Validated as:
-```
-Subject: Algorithm-v1.0
-Object: Improvement-v1.1
-```
-
-### Domain-qualified ideas
+### A co-instantiated idea with a relation
 
 ```
-#∃F: Permission-Reset-Script ∈ App_Infrastructure
+~⊕∃F: Four_Stage_Pipeline ⊢ Code_Generation
 ```
 
-Validated as:
-```
-Subject: Permission-Reset-Script
-Object: App_Infrastructure
-```
-
-### Ideas with dotted version numbers
+### A proof obligation (typed but unimplemented)
 
 ```
-!∃F: Framework-v2.0.1 ⊢ Deployment-v2.0.2
+#⊕∃F: borrowBook ⊣
 ```
 
-Validated as:
+### A versioned idea
+
 ```
-Subject: Framework-v2.0.1
-Object: Deployment-v2.0.2
+~⊕∃F: Attention_Mechanism-v2.1 ⊢ Query_Key_Scaling-v1.0
+```
+
+### A speculative idea
+
+```
+~∃f?: Speculative_Morphism
+```
+
+### A derived idea (Rule D)
+
+```
+~∴∃F: Category_Theory ⊢ Intersubjective_Communication
 ```
 
 ---
@@ -144,113 +124,126 @@ Object: Deployment-v2.0.2
 
 **Hard errors** (label rejected):
 - ✗ Missing intensity marker: `∃F: Concept`
-- ✗ Invalid subject: `~∃F: My Concept` (use underscore)
-- ✗ Wrong separator: `~∃F:Concept` (needs space after colon)
+- ✗ Invalid subject name: `~∃F: My Concept` (use underscore)
+- ✗ Missing space after colon: `~∃F:Concept`
+- ✗ Invalid completeness marker
 
-**Soft warnings** (label accepted, but flagged):
+**Soft warnings** (label accepted, flagged for review):
 - ⚠ Relation without object: `~∃F: Concept ⊢`
-- ⚠ Subject with spaces: `~∃F: My Concept`
-- ⚠ Too many relations: `~∃F: A ⊢ B ∧ C ∘ D ⊂ E`
+- ⚠ More than three relations
+- ⚠ `∄F` with no description of what is missing
 
 ---
 
-## For AI Systems Generating Labels
+## Running the Toolchain
 
-If you're building a system that generates labels (like in an audit prompt), validate the output:
+All tools live in `tools/` and are run from the repository root. The Cognitive Linter and Journal Manager require the virtual environment (`pyyaml` dependency).
 
-```python
-def audit_session(session_ideas):
-    labels = []
-    
-    for idea in session_ideas:
-        # Generate label
-        label = llm_generate_label(idea)
-        
-        # Validate
-        result = validate_label(label)
-        
-        if not result.valid:
-            # Regenerate until valid
-            label = llm_generate_label(idea, feedback=result.errors)
-            result = validate_label(label)
-            assert result.valid
-        
-        labels.append(label)
-    
-    return labels
+```bash
+# Activate the virtual environment
+source .venv/bin/activate
+
+# Validate a label
+python3 tools/validate_label.py "~⊕∃F: My_Concept"
+
+# Check all relational links across the repository
+python3 tools/linker.py .
+
+# Generate a graph visualisation
+python3 tools/visualizer.py .
+dot -Tpng graph.dot -o graph.png
+
+# Suggest labels from natural language
+python3 tools/nlle_suggestor.py "Proof obligations yield code targets."
+
+# Write a session to the journal
+python3 tools/journal_manager.py
+
+# Run the cognitive linter
+python3 tools/cognitive_linter.py
 ```
 
 ---
 
-## For Repository Maintainers
-
-Add a simple CI check to your GitHub Actions workflow:
-
-```yaml
-- name: Validate labels
-  run: |
-    for file in *.md; do
-      grep -o '[!~#@%][∃⊨⊕∴]∃F[^:]*:' "$file" | while read label; do
-        python3 tools/validate_label.py "$label" || exit 1
-      done
-    done
-```
-
-This ensures every commit has valid labels.
-
----
-
-## Schema Reference (One-Page)
+## The Session Workflow
 
 ```
-[Intensity] [Epistemic] [Completeness] : [Subject] [Relation] [Object]
-
-Intensity:    !, ~, #, @, %
-Epistemic:    ∃, ⊨, ⊕, ∴
-Completeness: ∃F+, ∃F, ∃f, ∄F, §, ⊣
-Subject:      alphanumeric + underscore/hyphen/dot
-Relation:     ∈, ⊂, ⊢, ≅, ∘, ∧, ·, ↳, ⊣ (max 3)
-Object:       alphanumeric + underscore/hyphen/dot
-
-Examples:
-✓ ~∃F: My_Concept
-✓ !⊕∃F: Algorithm-v2.0.1 ⊢ Result
-✓ #∃F: Process ⊂ System ∧ Other_Aspect
+1. Work in a session — develop ideas, write code, do research
+        ↓
+2. Run the audit prompt (examples/audit_prompt.md)
+   — Claude labels all ideas, checks readiness, fires Rules D/E/F
+        ↓
+3. Run the labelling prompt (examples/labelling_prompt.md)
+   — Claude produces the final validated label set
+        ↓
+4. Journal the session
+   python3 tools/journal_manager.py
+        ↓
+5. Run the cognitive linter before the next session
+   python3 tools/cognitive_linter.py
+   — flags stale obligations and unresolved blockers
+        ↓
+6. Repeat
 ```
 
 ---
 
 ## Troubleshooting
 
-**Q: I'm getting "Invalid subject name"**
-A: Check for spaces. Use underscores: `My_Concept` not `My Concept`. Hyphens and dots are fine: `v2.0.1`.
+**"Invalid subject name"**
+Use underscores for multi-word names (`My_Concept`), hyphens for versioning (`Algorithm-v2.0`), dots for version components (`v2.0.1`). No spaces.
 
-**Q: "Missing space after colon"**
-A: Format is `[Markers] : [Subject]`. Notice the space after the colon.
+**"Missing space after colon"**
+The separator is ` : ` — one space each side. `~∃F: Concept` is correct. `~∃F:Concept` is not.
 
-**Q: "Relation has no object" warning**
-A: This is allowed but flagged. If you meant to complete it, add the object: `Concept ⊢ Related_Concept`.
+**"Relation has no object" warning**
+This is a soft warning, not an error. The label is valid but flagged. Complete it: `Concept ⊢ Related_Concept`.
 
-**Q: My label is valid but I want suggestions**
-A: The validator returns soft warnings for common improvements. Check those first.
+**"Invalid completeness marker"**
+Must be exactly one of: `∃F+`, `∃F`, `∃f`, `∄F`, `§`, `⊣`. Note `∃F+` must be written before `∃F` is matched — the validator handles this, but be precise when writing manually.
 
----
-
-## Next Steps
-
-1. **Read** `schema.md` for the formal rules
-2. **Try** `tools/validate_label.py` on your labels
-3. **Integrate** the validator into your workflow (session, CI, or AI system)
-4. **Refer to** `INTEGRATION_GUIDE.md` for detailed patterns
+**Cognitive Linter can't find journal.log**
+Run `python3 tools/journal_manager.py` first to create the journal, then re-run the linter.
 
 ---
 
-**Files you now have:**
-- `schema.md` — updated formal grammar
-- `tools/validate_label.py` — the validator (CLI + library)
-- `tools/README.md` — usage and integration patterns
-- `REFINEMENT_SUMMARY.md` — what changed and why
-- `INTEGRATION_GUIDE.md` — detailed workflows
-- `QUICK_START.md` — this file
+## Schema Reference
 
-All refinements are backward compatible. Existing labels remain valid.
+Full formal grammar is in `schema.md`. The BNF in brief:
+
+```
+label        ::= intensity epistemic completeness [project] [uncertainty] ":" SPACE subject [relations]
+name         ::= word (("_" | "-" | ".") word)*
+word         ::= [A-Za-z0-9]+
+uncertainty  ::= "[" float "]" | "?"
+float        ::= "0." [0-9]+ | "1.0"
+```
+
+---
+
+## Files in This Repository
+
+```
+schema.md                        ← formal grammar (canonical reference)
+strategic_labelling_framework.md ← full layer reference with examples
+PHILOSOPHY.md                    ← why the framework exists
+CHANGELOG.md                     ← version history
+extensions/
+  curry_howard_extension.md      ← Curry-Howard correspondence and ⊣
+  operational_semantics.md       ← Rules A–F and the Epistemic Environment
+  rule_d_primer.md               ← Rule D in depth
+docs/
+  rule_d_implications.md         ← generative implications of Rule D
+  toolchain_specification.md     ← toolchain design specification
+examples/
+  audit_prompt.md                ← v2.7 canonical audit prompt
+  labelling_prompt.md            ← session labelling prompt
+  session_example.md             ← annotated worked example
+tools/
+  validate_label.py              ← label validator
+  linker.py                      ← cross-file link checker
+  visualizer.py                  ← graph generator
+  nlle_suggestor.py              ← natural language label suggester
+  cognitive_linter.py            ← epistemic velocity monitor
+  journal_manager.py             ← session journal writer
+```

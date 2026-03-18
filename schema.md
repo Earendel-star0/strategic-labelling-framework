@@ -17,7 +17,7 @@ A label that follows this grammar is valid. A label that does not is flagged wit
 ## The Canonical Structure
 
 ```
-[Intensity] [Epistemic] [Completeness] [Project∈] : [Subject] [Relation] [Object]
+[Intensity] [Epistemic] [Completeness] [Project∈] [Uncertainty] : [Subject] [Relation] [Object]
 ```
 
 Whitespace is significant **only around the colon separator**. The colon must have exactly one space on each side.
@@ -45,9 +45,9 @@ INVALID: ~∃F : Strategic_Labelling_Framework
 | `%` | Document / record of process |
 
 ```
-VALID:   !∃F: EGAP_v2
-INVALID: !~∃F: EGAP_v2        ← two intensity markers
-INVALID: ∃F: EGAP_v2          ← missing intensity marker
+VALID:   !∃F: EGAP-v2
+INVALID: !~∃F: EGAP-v2       ← two intensity markers
+INVALID: ∃F: EGAP-v2         ← missing intensity marker
 ```
 
 ---
@@ -61,18 +61,18 @@ INVALID: ∃F: EGAP_v2          ← missing intensity marker
 | `∃` | Self-generated |
 | `⊨` | Received / taught |
 | `⊕` | Co-instantiated with AI |
-| `∴` | Derived by the framework (Rule D) |
+| `∴` | Derived by the framework (Rule D / Rule E) |
 
 ```
 VALID:   ~∃F: Concept
-VALID:   ~⊨F: Concept
-VALID:   ~⊕F: Concept
-VALID:   ~∴F: Concept
-INVALID: ~∃⊕F: Concept       ← two epistemic markers
+VALID:   ~⊨∃F: Concept
+VALID:   ~⊕∃F: Concept
+VALID:   ~∴∃F: Concept
+INVALID: ~∃⊕∃F: Concept      ← two epistemic markers
 INVALID: ~F: Concept          ← missing epistemic marker
 ```
 
-**Note on `∴`:** The derived marker appears automatically when Rule D (Structural Composition) infers a transitive relation in the session graph. Users do not typically create `∴` labels manually — they are produced by framework inference. See `operational_semantics.md` for details.
+**Note on `∴`:** The derived marker appears automatically when Rule D (Structural Composition) or Rule E (Isomorphic Resolution) infers a relation in the session graph. Users do not typically create `∴` labels manually — they are produced by framework inference. See `extensions/operational_semantics.md` for details.
 
 ---
 
@@ -103,7 +103,7 @@ INVALID: ~∃F§: Concept        ← two completeness markers
 
 **Optional.**
 
-Used to situate a label within a named project or domain. Written as `∈ProjectName` immediately after the completeness marker, before the colon.
+Used to situate a label within a named project or domain. Written as `∈ProjectName` immediately after the completeness marker, before the uncertainty marker and colon.
 
 ```
 VALID:   #∃F∈MHD: Ethical_App_Building
@@ -112,24 +112,45 @@ VALID:   #∃F: Ethical_App_Building       ← project membership omitted
 
 ---
 
-### 5. Subject `[Subject]`
+### 5. Uncertainty `[Uncertainty]`
+
+**Optional. Layer 7 — introduced in v2.7.**
+
+Assigns a confidence weight to a label. Two forms are permitted:
+
+| Symbol | Meaning |
+| :---- | :---- |
+| `[n]` | Confidence score, where n is a float between 0.0 and 1.0 |
+| `?` | Heuristic / speculative — confidence unquantified |
+
+```
+VALID:   ~⊕∃f[0.8]: Emergent_Pattern
+VALID:   ~∃f?: Speculative_Morphism
+INVALID: ~∃f[1.5]: Concept     ← score out of range
+```
+
+Heuristic labels (`?`) are monitored by the Cognitive Linter — they should be formalised with a score or promoted to `∃f` within the defined session threshold.
+
+---
+
+### 6. Subject `[Subject]`
 
 **Required.**
 
-The name of the idea, artefact, or concept being labelled. Multi-word names use underscore convention; versioning and domain qualifiers use hyphen.
+The name of the idea, artefact, or concept being labelled. Multi-word names use underscore convention; versioning and domain qualifiers use hyphen; version components use dot notation.
 
 ```
 VALID:   ~∃F: Strategic_Labelling_Framework
 VALID:   ~∃F: EGAP-v2.0.1
-VALID:   ~∃F: Category-Theory
+VALID:   ~∃F: Adaptive_Waypoint_System-v1.1
 INVALID: ~∃F: Strategic Labelling Framework   ← spaces in subject name
 ```
 
-**Naming philosophy:** Subject names are identifiers. They appear in session logs and in relational links across sessions. Underscores join words into a single identifier (`Strategic_Labelling_Framework`). Hyphens separate version numbers or domain qualifiers from the core name (`EGAP-v2.0.1`, `Permission-Reset-Script`). This convention keeps identifiers machine-readable and human-parseable across the framework's lifetime.
+**Naming philosophy:** Subject names are identifiers. They appear in session logs and in relational links across sessions. Underscores join words into a single identifier (`Strategic_Labelling_Framework`). Hyphens separate version numbers or domain qualifiers from the core name (`EGAP-v2.0.1`). Dots separate version components (`v2.0.1`). This convention keeps identifiers machine-readable and human-parseable across the framework's lifetime.
 
 ---
 
-### 6. Relation `[Relation]`
+### 7. Relation `[Relation]`
 
 **Optional. Maximum three relational symbols per label.**
 
@@ -158,11 +179,11 @@ INVALID: !⊕∃F: EGAP ⊢ A ∧ B ∘ C ⊂ D    ← four relations, exceeds m
 
 ---
 
-### 7. Object `[Object]`
+### 8. Object `[Object]`
 
 **Optional but recommended.**
 
-The thing the Subject relates to. Follows the same naming convention as Subject — underscore for multi-word names, hyphen for versioning.
+The thing the Subject relates to. Follows the same naming convention as Subject.
 
 When a relation is present but no object is given, the label is **valid but flagged** with a soft warning:
 
@@ -205,19 +226,17 @@ relations     ::= SPACE relation [SPACE relation [SPACE relation]]
 relation      ::= relop [SPACE object]
 relop         ::= "∈" | "⊂" | "⊢" | "≅" | "∘" | "∧" | "·" | "↳" | "⊣"
 object        ::= name
-name          ::= word ("_" word)* | word ("-" word)* | word ("." word)*
+name          ::= word (("_" | "-" | ".") word)*
 word          ::= [A-Za-z0-9]+
 float         ::= "0." [0-9]+ | "1.0"
 SPACE         ::= " "
 ```
 
-**Key changes from previous grammar:**
-- `name` now permits underscore (for multi-word identifiers) and hyphen (for versioning/qualification)
-- `word` remains alphanumeric — special characters are not permitted within words themselves, only as separators between words
-- `∴` (derived marker) added to epistemic options — typically produced by Rule D inference, not user-created
-- This broadened grammar now matches actual practice in all documented examples
-
-Note: `∃F+` must be matched before `∃F` to avoid partial matching.
+**Notes:**
+- `∃F+` must be matched before `∃F` to avoid partial matching
+- `name` permits underscore (multi-word), hyphen (versioning), and dot (version components) as separators — mixed separators are allowed within a single name (e.g. `EGAP-v2.0.1`)
+- `∴` is typically produced by Rule D / Rule E inference, not written manually
+- The BNF now supersedes the alternation form used in v2.6; the unified separator pattern correctly handles mixed separators such as `Algorithm-v2.0.1`
 
 ---
 
@@ -225,13 +244,15 @@ Note: `∃F+` must be matched before `∃F` to avoid partial matching.
 
 ```
 ~∃§: Strategic_Labelling_Framework
-!⊕∃F: EGAP-v2.0.1 ⊢ Garden's_Tensor_Logic
+!⊕∃F: EGAP-v2.0.1 ⊢ Tensor_Logic
 #∃F: Adaptive_Waypoint_System-v1.1
 @⊕∃f: Category_Theory ⊂ Protocols
 %⊨∃F: App_Scripts · Permission_Reset
-~∃F: Σ(Protocol_Design, Med_Viz) ⊢ Epistemic_Node ∧ Structural_Integrity
+~∃F: Epistemic_Node ⊢ Structural_Integrity ∧ Session_Persistence
 ~⊕∃f: Curry_Howard ⊣
 ~∴∃F: Category_Theory ⊢ Intersubjective_Communication
+~⊕∃f[0.7]: Neural_Manifold ≅ Geometric_Invariant
+~∃f?: Speculative_Morphism
 ```
 
 ---
@@ -251,10 +272,10 @@ Note: `∃F+` must be matched before `∃F` to avoid partial matching.
 
 ## Versioning
 
-This schema reflects **Strategic Labelling Framework v2.5**.
+This schema reflects **Strategic Labelling Framework v2.7**.
 For a full history of changes, see `CHANGELOG.md`.
 
 ---
 
 *This document is part of the Strategic Labelling Framework repository.*
-*See also: README.md, PHILOSOPHY.md, curry_howard_extension.md*
+*See also: README.md, PHILOSOPHY.md, extensions/curry_howard_extension.md, extensions/operational_semantics.md*
