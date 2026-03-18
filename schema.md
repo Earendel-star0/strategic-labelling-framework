@@ -279,3 +279,11 @@ For a full history of changes, see `CHANGELOG.md`.
 
 *This document is part of the Strategic Labelling Framework repository.*
 *See also: README.md, PHILOSOPHY.md, extensions/curry_howard_extension.md, extensions/operational_semantics.md*
+
+~∃§: Tensor_Logic
+~∃§: Protocols
+~∃§: Structural_Integrity
+
+~∃§: Tensor_Logic
+~∃§: Protocols
+~∃§: Structural_Integrity
