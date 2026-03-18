@@ -26,6 +26,7 @@
 | **∃** | Self-generated / brought into existence | *~∃F: Categorical Diagram Design* |
 | **⊨** | Received / taught by external source | *%⊨ App Scripts: Permission Reset* |
 | **⊕** | Co-instantiated with AI / emergent | *@⊕ Category Theory ⊂ Protocols* |
+| **∴** | Derived by the framework (Rule D / Rule E) |
 
 *Rule: Every label should carry exactly one epistemic origin marker.*
 

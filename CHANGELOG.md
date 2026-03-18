@@ -1,4 +1,4 @@
-CHANGELOG.md
+# CHANGELOG.md
 
 Strategic Labelling Framework — Version History
 
