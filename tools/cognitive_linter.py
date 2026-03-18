@@ -145,9 +145,9 @@ def build_gamma(sessions: list[dict]) -> dict[str, TrackedLabel]:
             if not res.valid:
                 continue
 
-            subj       = res.parsed['subject']
-            comp       = res.parsed['completeness']
-            intensity  = res.parsed['intensity']
+            subj        = res.parsed['subject']
+            comp        = res.parsed['completeness']
+            intensity   = res.parsed['intensity']
             uncertainty = res.parsed.get('uncertainty')
 
             if subj not in gamma:
@@ -164,7 +164,6 @@ def build_gamma(sessions: list[dict]) -> dict[str, TrackedLabel]:
             else:
                 existing = gamma[subj]
                 if comp != existing.completeness:
-                    # State has transitioned — this is progress
                     existing.resolved = True
                     existing.completeness = comp
                     existing.intensity = intensity
@@ -176,7 +175,6 @@ def build_gamma(sessions: list[dict]) -> dict[str, TrackedLabel]:
 
                 existing.last_seen = session_id
 
-            # Apply deferral annotations
             if subj in deferrals:
                 gamma[subj].deferred = True
                 gamma[subj].deferred_reason = deferrals[subj]
@@ -191,15 +189,10 @@ def check_rule_f(sessions: list[dict]) -> list[str]:
 
     Contradiction: A ⊢ B and A ⊢ ¬B coexist in Γ.
 
-    In practice this looks for subject-object pairs where the same
-    subject appears with both a positive ⊢ and a negation marker
-    toward the same object across the session history.
-
     This is a conservative heuristic; full negation detection would
     require natural language understanding beyond the label grammar.
     """
     violations = []
-    # Map subject → set of (relation, object) pairs seen
     seen: dict[str, set] = {}
 
     for entry in sessions:
@@ -249,9 +242,8 @@ def run_audit(gamma: dict[str, TrackedLabel],
     """
     Applies staleness thresholds and collects findings into a LintReport.
 
-    Deferred items are included in output as informational, not as warnings,
-    unless they have been deferred past twice the original threshold —
-    at which point they re-escalate. A deferred ⊣ is still a ⊣.
+    Deferred items receive doubled thresholds before re-escalating.
+    A deferred ⊣ is still a ⊣ — deferral does not close an obligation.
     """
     report = LintReport()
 
@@ -261,16 +253,13 @@ def run_audit(gamma: dict[str, TrackedLabel],
         n         = tracked.sessions_open
         deferred  = tracked.deferred
 
-        # Skip closed items
         if comp == '∃F+':
             continue
 
-        # Determine effective threshold (doubled if deferred)
         def threshold(base_key: str) -> int:
             t = THRESHOLDS[base_key]
             return t * 2 if deferred else t
 
-        # Critical blocker: !∄F
         if intensity == '!' and comp == '∄F':
             if n > threshold('CRITICAL_BLOCKER'):
                 report.critical_stagnations.append({
@@ -283,7 +272,6 @@ def run_audit(gamma: dict[str, TrackedLabel],
                     'label': tracked.raw_label,
                 })
 
-        # Stale proof obligation: ⊣
         elif comp == '⊣':
             if n > threshold('STALE_OBLIGATION'):
                 report.stale_obligations.append({
@@ -296,7 +284,6 @@ def run_audit(gamma: dict[str, TrackedLabel],
                     'label': tracked.raw_label,
                 })
 
-        # Heuristic decay: ? uncertainty marker
         elif tracked.uncertainty and '?' in str(tracked.uncertainty):
             if n > threshold('HEURISTIC_DECAY'):
                 report.heuristic_decays.append({
@@ -310,7 +297,6 @@ def run_audit(gamma: dict[str, TrackedLabel],
 
     report.rule_f_violations = rule_f_violations
 
-    # Summary counts across all of Γ
     report.summary = {
         'total_tracked':        len(gamma),
         'obligations_open':     sum(1 for t in gamma.values() if t.completeness == '⊣'),
@@ -389,46 +375,22 @@ def render_report(report: LintReport):
     print("──────────────────────────────────────────────────────────────────")
     print()
 
-# ── Proof Search integration ──────────────────────────────────────────────────
-try:
-    from proof_search import run_for_linter
-    flagged = []
-    for item in report.critical_stagnations + report.stale_obligations:
-        flagged.append({
-            'subject':      item['subject'],
-            'label':        item['label'],
-            'prompt':       item['prompt'],
-            'completeness': '∄F' if item in report.critical_stagnations else '⊣',
-        })
-    for item in report.heuristic_decays:
-        flagged.append({
-            'subject':      item['subject'],
-            'label':        item['label'],
-            'prompt':       item['prompt'],
-            'completeness': '?',
-        })
-    if flagged:
-        run_for_linter(flagged)
-except ImportError:
-    pass
-
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
-    log_path   = DEFAULT_LOG
+    log_path    = DEFAULT_LOG
     output_json = '--json' in sys.argv
 
     for arg in sys.argv[1:]:
         if not arg.startswith('--'):
             log_path = arg
 
-    sessions       = load_journal(log_path)
-    gamma          = build_gamma(sessions)
-    rule_f         = check_rule_f(sessions)
-    report         = run_audit(gamma, rule_f)
+    sessions = load_journal(log_path)
+    gamma    = build_gamma(sessions)
+    rule_f   = check_rule_f(sessions)
+    report   = run_audit(gamma, rule_f)
 
     if output_json:
-        # Serialise TrackedLabel objects for JSON output
         gamma_serial = {
             k: {
                 'subject':       v.subject,
@@ -443,8 +405,8 @@ if __name__ == '__main__':
             for k, v in gamma.items()
         }
         output = {
-            'gamma':   gamma_serial,
-            'report':  {
+            'gamma':  gamma_serial,
+            'report': {
                 'critical_stagnations': report.critical_stagnations,
                 'stale_obligations':    report.stale_obligations,
                 'heuristic_decays':     report.heuristic_decays,
@@ -455,5 +417,31 @@ if __name__ == '__main__':
         print(json.dumps(output, indent=2, ensure_ascii=False))
     else:
         render_report(report)
+
+        # ── Proof Search integration ──────────────────────────────────────
+        # Runs after the report is printed. Writes crux_report.md if any
+        # flagged items exist and proof_search.py is present in tools/.
+        # Degrades gracefully if proof_search.py is not found.
+        try:
+            from proof_search import run_for_linter
+            flagged = []
+            for item in report.critical_stagnations + report.stale_obligations:
+                flagged.append({
+                    'subject':      item['subject'],
+                    'label':        item['label'],
+                    'prompt':       item['prompt'],
+                    'completeness': '∄F' if item in report.critical_stagnations else '⊣',
+                })
+            for item in report.heuristic_decays:
+                flagged.append({
+                    'subject':      item['subject'],
+                    'label':        item['label'],
+                    'prompt':       item['prompt'],
+                    'completeness': '?',
+                })
+            if flagged:
+                run_for_linter(flagged)
+        except ImportError:
+            pass
 
     sys.exit(0 if report.is_clean() else 1)
