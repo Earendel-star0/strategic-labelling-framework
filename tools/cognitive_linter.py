@@ -389,6 +389,29 @@ def render_report(report: LintReport):
     print("──────────────────────────────────────────────────────────────────")
     print()
 
+# ── Proof Search integration ──────────────────────────────────────────────────
+try:
+    from proof_search import run_for_linter
+    flagged = []
+    for item in report.critical_stagnations + report.stale_obligations:
+        flagged.append({
+            'subject':      item['subject'],
+            'label':        item['label'],
+            'prompt':       item['prompt'],
+            'completeness': '∄F' if item in report.critical_stagnations else '⊣',
+        })
+    for item in report.heuristic_decays:
+        flagged.append({
+            'subject':      item['subject'],
+            'label':        item['label'],
+            'prompt':       item['prompt'],
+            'completeness': '?',
+        })
+    if flagged:
+        run_for_linter(flagged)
+except ImportError:
+    pass
+
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
