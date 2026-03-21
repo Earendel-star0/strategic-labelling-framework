@@ -1,44 +1,47 @@
 #!/usr/bin/env python3
-"""
-Strategic Labelling Framework — The Visualizer v1.0
-Generates Graphviz DOT files from SLF v2.7 label graphs.
-"""
-
-import os
-import sys
+import os, sys
 from validate_label import validate_label
 
 class SLFVisualizer:
     def __init__(self):
-        self.nodes = set()
-        self.edges = [] # List of (subj, obj, relation_type, is_derived)
+        self.nodes = {} # dict mapping node -> completeness
+        self.edges = [] 
 
     def scan_file(self, filepath: str):
-        """Parses a file for labels and builds the graph structure."""
         with open(filepath, 'r', encoding='utf-8') as f:
             for line in f:
                 if ':' in line:
                     res = validate_label(line.strip())
                     if res.valid:
                         subj = res.parsed['subject']
+                        comp = res.parsed['completeness']
                         is_derived = res.parsed['epistemic'] == '∴'
-                        self.nodes.add(subj)
                         
+                        # Upgrade completeness state if discovered
+                        if subj not in self.nodes or comp in ['∃F+', '∃F', '§']:
+                            self.nodes[subj] = comp
+                            
                         for rel, obj in zip(res.parsed['relations'], res.parsed['objects']):
                             if obj:
-                                self.nodes.add(obj)
+                                if obj not in self.nodes:
+                                    self.nodes[obj] = 'UNKNOWN'
                                 self.edges.append((subj, obj, rel, is_derived))
 
     def generate_dot(self, output_path: str):
-        """Outputs a DOT file for rendering with Graphviz."""
+        colors = {
+            '∃F+': 'darkgreen', '∃F': 'black', '∃f': 'gray', 
+            '∄F': 'red', '⊣': 'darkorange', '§': 'purple', 'UNKNOWN': 'lightgray'
+        }
+        
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write("digraph SLF_Graph {\n")
             f.write("  rankdir=LR;\n")
             f.write("  node [shape=box, style=filled, fillcolor=white, fontname=\"Arial\"];\n\n")
 
-            # Style derived nodes differently
-            for node in self.nodes:
-                f.write(f"  \"{node}\";\n")
+            # Apply completeness coloring
+            for node, comp in self.nodes.items():
+                col = colors.get(comp, 'black')
+                f.write(f"  \"{node}\" [color=\"{col}\", fontcolor=\"{col}\", penwidth=2];\n")
 
             f.write("\n")
 
@@ -52,13 +55,8 @@ class SLFVisualizer:
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else "."
     viz = SLFVisualizer()
-    
-    if os.path.isfile(target):
-        viz.scan_file(target)
-    else:
-        for root, _, files in os.walk(target):
-            for file in files:
-                if file.endswith(".md"):
-                    viz.scan_file(os.path.join(root, file))
-
+    for root, _, files in os.walk(target):
+        for file in files:
+            if file.endswith(".md"):
+                viz.scan_file(os.path.join(root, file))
     viz.generate_dot("graph.dot")

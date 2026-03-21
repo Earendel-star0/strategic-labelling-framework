@@ -184,37 +184,45 @@ def build_gamma(sessions: list[dict]) -> dict[str, TrackedLabel]:
 # ── Rule F: temporal conflict detection ───────────────────────────────────────
 
 def check_rule_f(sessions: list[dict]) -> list[str]:
-    """
-    Scans Γ for epistemic dissonance introduced across sessions.
-
-    Contradiction: A ⊢ B and A ⊢ ¬B coexist in Γ.
-
-    This is a conservative heuristic; full negation detection would
-    require natural language understanding beyond the label grammar.
-    """
+    """Scans Γ for epistemic dissonance (A ⊢ B and A ⊢ ¬B)."""
     violations = []
     seen: dict[str, set] = {}
+    
+    # Expand negation prefixes
+    neg_prefixes = ('NOT_', 'NON_', 'ANTI_', 'UN_', 'NO_')
 
     for entry in sessions:
         session_id = str(entry.get('session', 'unknown'))
         for raw in (entry.get('gamma') or []):
-            if not isinstance(raw, str):
-                continue
+            if not isinstance(raw, str): continue
+            
             res = validate_label(raw.strip())
-            if not res.valid:
-                continue
+            if not res.valid: continue
+            
             subj = res.parsed['subject']
             for rel, obj in zip(res.parsed['relations'], res.parsed['objects']):
-                if obj is None:
-                    continue
-                key = (rel, obj)
-                neg_key = (rel, f'NOT_{obj}')
-                if subj not in seen:
-                    seen[subj] = set()
-                if neg_key in seen[subj]:
+                if obj is None: continue
+                
+                # Normalize object to separate base from negation
+                upper_obj = obj.upper()
+                is_negated = False
+                base_obj = obj
+                
+                for p in neg_prefixes:
+                    if upper_obj.startswith(p):
+                        is_negated = True
+                        base_obj = obj[len(p):].strip('_')
+                        break
+                
+                key = (rel, base_obj, is_negated)
+                opp_key = (rel, base_obj, not is_negated)
+                
+                if subj not in seen: seen[subj] = set()
+                
+                if opp_key in seen[subj]:
                     violations.append(
-                        f"Rule F: '{subj}' has both '{rel} {obj}' and '{rel} NOT_{obj}' "
-                        f"in Γ — Epistemic Dissonance detected (session: {session_id})"
+                        f"Rule F: '{subj}' has contradictory relations for '{base_obj}' "
+                        f"— Epistemic Dissonance detected (session: {session_id})"
                     )
                 seen[subj].add(key)
 

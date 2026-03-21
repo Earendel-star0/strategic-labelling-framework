@@ -1,7 +1,7 @@
 #!/bin/bash
-# Strategic Labelling Framework — Unified Toolchain Installer v2.8-alpha
+# Strategic Labelling Framework — Unified Toolchain Installer v2.8
 
-echo "--- Initializing SLF v2.8-alpha Toolchain ---"
+echo "--- Initializing SLF v2.8 Toolchain ---"
 
 # 1. Create tools directory if it doesn't exist
 mkdir -p tools
@@ -109,4 +109,4 @@ echo "pyyaml==6.0.1" > requirements.txt
 
 # 6. Finalize permissions
 chmod +x tools/*.py
-echo "--- v2.8-alpha Toolchain Materialized ---"
+echo "--- v2.8 Toolchain Materialized ---"
